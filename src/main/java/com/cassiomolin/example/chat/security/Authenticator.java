@@ -1,16 +1,15 @@
 package com.cassiomolin.example.chat.security;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 /**
  * In-memory authenticator.
@@ -24,13 +23,6 @@ public class Authenticator {
 
     private Cache<String, String> accessTokens;
 
-    private static Map<String, String> users = new HashMap<>();
-
-    static {
-        users.put("joe", "secret");
-        users.put("jane", "secret");
-        users.put("john", "secret");
-    }
 
     @PostConstruct
     public void init() {
@@ -41,7 +33,7 @@ public class Authenticator {
     }
 
     public boolean checkCredentials(String username, String password) {
-        return users.containsKey(username) && users.get(username).equals(password);
+        return username.equals(password);
     }
 
     public String issueAccessToken(String username) {
